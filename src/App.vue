@@ -3,6 +3,7 @@
     <section class="body-header"></section>
     <section class="body-content">
       <Sidebar />
+      <router-view />
     </section>
   </section>
 </template>
