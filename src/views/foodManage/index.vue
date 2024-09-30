@@ -33,9 +33,11 @@
       <page-pagination @refresh="getDataList" :page-no.sync="searchForm.pageNo" :page-size.sync="searchForm.pageSize" :total="pageTotal" />
     </template>
   </page-layout>
+  <!-- <addEditDialog /> -->
 </template>
 <script setup>
 import { reactive, ref } from 'vue'
+// import addEditDialog from './components/addEditDialog.vue'
 const searchForm = reactive({
   name: '',
   status: '',
