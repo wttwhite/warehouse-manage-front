@@ -18,12 +18,16 @@
       </el-form>
     </template>
     <template #btnBox>
-      <el-button type="primary">新增</el-button>
+      <el-button type="primary" @click="addClick">新增</el-button>
     </template>
     <el-table :data="tableData" height="100%" stripe>
-      <el-table-column prop="date" label="Date" width="180" />
-      <el-table-column prop="name" label="Name" width="180" />
-      <el-table-column prop="address" label="Address" />
+      <el-table-column prop="date" label="序号" />
+      <el-table-column prop="name" label="食材名称" />
+      <el-table-column prop="address" label="食材类型" />
+      <el-table-column prop="address" label="库存" />
+      <el-table-column prop="address" label="生产日期" />
+      <el-table-column prop="address" label="过期日期" />
+      <el-table-column prop="address" label="创建时间" />
     </el-table>
     <template #footer>
       <page-pagination @refresh="getDataList" :page-no.sync="searchForm.pageNo" :page-size.sync="searchForm.pageSize" :total="pageTotal" />
@@ -48,6 +52,9 @@ const onSubmit = () => {
   console.log('submit!')
 }
 const onReset = () => {
+  console.log('onReset!')
+}
+const addClick = () => {
   console.log('onReset!')
 }
 </script>

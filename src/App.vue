@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Sidebar from '@/components/side-bar.vue'
+import Sidebar from '@/components/pageSidebar.vue'
 
 export default {
   name: 'App',
@@ -38,6 +38,5 @@ export default {
 .body-content {
   flex: 1;
   display: flex;
-  background-color: #ccc;
 }
 </style>
