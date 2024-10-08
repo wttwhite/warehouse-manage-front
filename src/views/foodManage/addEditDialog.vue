@@ -1,34 +1,64 @@
 <template>
-  <el-dialog title="新增" :visible.sync="visible" :close-on-click-modal="false" width="500px">
-    <el-form ref="formRef" :rules="rules" :model="formData" label-position="top">
-      <el-form-item label="食材名称" prop="followPersonId">
+  <el-dialog title="新增" v-model="visible" :close-on-click-modal="false" width="500px">
+    <el-form ref="formRef" :rules="rules" :model="formData" label-width="90">
+      <el-form-item label="食材名称" prop="name">
         <el-input v-model="formData.name" />
       </el-form-item>
+      <el-form-item label="食材类型" prop="type">
+        <el-select v-model="formData.type">
+          <el-option :label="item.label" :value="key" v-for="(item, key) in typeOps" :key="key"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="库存" prop="inventory">
+        <el-input v-model="formData.inventory">
+          <template #append>
+            <el-select v-model="formData.unit" placeholder="Select" style="width: 80px">
+              <el-option :label="item.label" :value="key" v-for="(item, key) in unitOps" :key="key" />
+            </el-select>
+          </template>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="保质期" prop="sellByDate">
+        <el-date-picker v-model="formData.sellByDate" type="date" />
+      </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <template #footer>
       <el-button @click="visible = false">取 消</el-button>
       <el-button type="primary" @click="submitClick" :disabled="loading" v-loading="loading"> 确 定 </el-button>
-    </div>
+    </template>
   </el-dialog>
 </template>
 
 <script setup>
 // import { rentManagerUpdate } from '@/apis/holdasset-contract'
 import { ref, reactive, defineEmits, defineExpose } from 'vue'
+import { TypeOps, UnitOps } from './const'
+const typeOps = ref(TypeOps)
+const unitOps = ref(UnitOps)
 const visible = ref(false)
 const loading = ref(false)
 let formData = reactive({
-  name: ''
+  name: '',
+  type: '',
+  inventory: '',
+  unit: 'g',
+  sellByDate: ''
 })
 const rules = {
-  followPersonId: [{ required: true, message: '请选择经办人' }]
+  name: [{ required: true, message: '当前项必填', trigger: 'blur' }],
+  type: [{ required: true, message: '当前项必填', trigger: 'blur' }],
+  inventory: [{ required: true, message: '当前项必填', trigger: 'blur' }],
+  sellByDate: [{ required: true, message: '当前项必填', trigger: 'blur' }]
 }
+const formRef = ref(null)
 // 初始化
 const showDialog = row => {
   visible.value = true
-  formData.followPersonId = ''
-  formData = {
-    ...row
+  formRef.value?.resetFields()
+  if (row) {
+    formData = {
+      ...row
+    }
   }
 }
 // 通过实例暴露给外面
@@ -38,7 +68,6 @@ defineExpose({
 
 // 提交
 const emit = defineEmits(['refresh'])
-const formRef = ref(null)
 const submitClick = () => {
   formRef.value.validate(valid => {
     if (valid) {

@@ -32,12 +32,12 @@
     <template #footer>
       <page-pagination @refresh="getDataList" :page-no.sync="searchForm.pageNo" :page-size.sync="searchForm.pageSize" :total="pageTotal" />
     </template>
+    <addEditDialog ref="addEditDialogRef" />
   </page-layout>
-  <!-- <addEditDialog /> -->
 </template>
 <script setup>
 import { reactive, ref } from 'vue'
-// import addEditDialog from './components/addEditDialog.vue'
+import addEditDialog from './addEditDialog.vue'
 const searchForm = reactive({
   name: '',
   status: '',
@@ -56,8 +56,11 @@ const onSubmit = () => {
 const onReset = () => {
   console.log('onReset!')
 }
+
+const addEditDialogRef = ref(null)
 const addClick = () => {
-  console.log('onReset!')
+  console.log(addEditDialogRef.value)
+  addEditDialogRef.value.showDialog()
 }
 </script>
 <style lang="scss" scoped></style>
