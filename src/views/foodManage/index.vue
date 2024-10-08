@@ -23,11 +23,11 @@
     <el-table :data="tableData" height="100%" stripe>
       <el-table-column prop="date" label="序号" />
       <el-table-column prop="name" label="食材名称" />
-      <el-table-column prop="address" label="食材类型" />
-      <el-table-column prop="address" label="库存" />
-      <el-table-column prop="address" label="生产日期" />
-      <el-table-column prop="address" label="过期日期" />
-      <el-table-column prop="address" label="创建时间" />
+      <el-table-column prop="type" label="食材类型" />
+      <el-table-column prop="inventory" label="库存" />
+      <el-table-column prop="productDate" label="生产日期" />
+      <el-table-column prop="sellByDate" label="保质期" />
+      <el-table-column prop="createTime" label="创建时间" />
     </el-table>
     <template #footer>
       <page-pagination @refresh="getDataList" :page-no.sync="searchForm.pageNo" :page-size.sync="searchForm.pageSize" :total="pageTotal" />
@@ -36,8 +36,12 @@
   </page-layout>
 </template>
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import addEditDialog from './addEditDialog.vue'
+import { getFoodPage } from '@/apis/food'
+onMounted(() => {
+  getDataList()
+})
 const searchForm = reactive({
   name: '',
   status: '',
@@ -46,8 +50,10 @@ const searchForm = reactive({
 })
 const pageTotal = ref(1)
 let tableData = reactive([{ id: 1, name: '素' }])
-const getDataList = () => {
-  tableData = [{ id: 1, name: '1' }]
+const getDataList = async () => {
+  const data = await getFoodPage(searchForm)
+  console.log('data', data)
+  tableData = data.data
   pageTotal.value = 100
 }
 const onSubmit = () => {

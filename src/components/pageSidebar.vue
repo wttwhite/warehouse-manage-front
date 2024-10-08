@@ -1,11 +1,11 @@
 <template>
-  <section class="sidebar">
-    <el-menu default-active="2" :collapse="isCollapse" @open="handleOpen" @close="handleClose">
+  <section :class="['sidebar', { 'sidebar-collapse': !isCollapse }]">
+    <el-menu default-active="2" :collapse="isCollapse" :collapse-transition="false">
       <el-icon class="icon-btn" :size="24" :color="color" @click="isCollapse = !isCollapse">
         <Fold v-show="!isCollapse" />
         <Expand v-show="isCollapse" />
       </el-icon>
-      <el-menu-item v-for="(item, index) in menuList" :key="index" :index="index" @click="menuItemClick(item)">
+      <el-menu-item v-for="(item, index) in menuList" :key="index" :index="index + ''" @click="menuItemClick(item)">
         <el-icon><document /></el-icon>
         <template #title>{{ item?.meta?.title }}</template>
       </el-menu-item>
@@ -35,8 +35,11 @@ const menuItemClick = item => {
 // })
 </script>
 <style lang="scss" scoped>
-.sidebar {
+.sidebar-collapse {
   width: 200px;
+  flex-shrink: 0;
+}
+.sidebar {
   height: 100%;
   position: relative;
   .icon-btn {

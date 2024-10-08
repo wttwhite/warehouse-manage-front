@@ -9,8 +9,8 @@ module.exports = defineConfig({
       'Access-Control-Allow-Origin': '*'
     },
     proxy: {
-      '/app/holdasset-base': {
-        target: 'http://192.168.1.223:8080',
+      '/food': {
+        target: 'http://192.168.3.19:3000',
         changeOrigin: true,
         pathRewrite: {
           // '/app': '',

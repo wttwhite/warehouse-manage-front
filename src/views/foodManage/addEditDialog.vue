@@ -18,6 +18,9 @@
           </template>
         </el-input>
       </el-form-item>
+      <el-form-item label="生产日期" prop="productDate">
+        <el-date-picker v-model="formData.productDate" type="date" />
+      </el-form-item>
       <el-form-item label="保质期" prop="sellByDate">
         <el-date-picker v-model="formData.sellByDate" type="date" />
       </el-form-item>
@@ -42,6 +45,7 @@ let formData = reactive({
   type: '',
   inventory: '',
   unit: 'g',
+  productDate: '',
   sellByDate: ''
 })
 const rules = {
