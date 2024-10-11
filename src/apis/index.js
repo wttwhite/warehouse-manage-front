@@ -2,7 +2,7 @@ import axios from 'axios'
 // import { Message } from 'element-plus'
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? '/app/' : '', // process.env.VUE_APP_BASE_URL, // url = base url + request url
+  baseURL: '/api', // process.env.VUE_APP_BASE_URL, // url = base url + request url
   // baseURL: process.env.NODE_ENV === 'production' ? '/app/' : '/app/', // process.env.VUE_APP_BASE_URL, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 60000 // request timeout
@@ -43,12 +43,12 @@ service.interceptors.response.use(
       // 一般是文件下载
       return response
     }
-    // if (res.code !== 0 && res.code !== '0' && res.code !== 200) {
-    //   Message.warning(res.msg || res.message)
-    //   return Promise.reject(new Error(res.msg || res.message || 'Error'))
-    // } else {
-    //   return res.data
-    // }
+    if (res.code !== 0 && res.code !== '0' && res.code !== 200) {
+      // Message.warning(res.msg || res.message)
+      return Promise.reject(new Error(res.msg || res.message || 'Error'))
+    } else {
+      return res
+    }
   },
   error => {
     console.log(error.message)

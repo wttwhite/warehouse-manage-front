@@ -16,3 +16,41 @@ export const UnitOps = {
   g: { label: 'g' },
   pack: { label: '包' }
 }
+
+import dayjs from 'dayjs'
+export const TableColumnList = [
+  { prop: 'name', label: '食材名称', minWidth: 100 },
+  { prop: 'type', label: '食材类型', func: row => TypeOps[row.type].label, minWidth: 100 },
+  {
+    prop: 'inventory',
+    label: '库存',
+    func: row => {
+      return row.inventory + row.unit
+    },
+    minWidth: 100
+  },
+  {
+    prop: 'productDate',
+    label: '生产日期',
+    func: row => {
+      return row.productDate && dayjs(row.productDate).format('YYYY-MM-DD')
+    },
+    minWidth: 100
+  },
+  {
+    prop: 'sellByDate',
+    label: '保质期',
+    func: row => {
+      return row.sellByDate && dayjs(row.sellByDate).format('YYYY-MM-DD')
+    },
+    minWidth: 100
+  },
+  {
+    prop: 'createTime',
+    label: '创建时间',
+    func: row => {
+      return dayjs(row.createTime).format('YYYY-MM-DD hh:mm:ss')
+    },
+    minWidth: 150
+  }
+]

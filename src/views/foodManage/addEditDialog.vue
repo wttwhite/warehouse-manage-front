@@ -5,7 +5,7 @@
         <el-input v-model="formData.name" />
       </el-form-item>
       <el-form-item label="食材类型" prop="type">
-        <el-select v-model="formData.type">
+        <el-select v-model="formData.type" placeholder="请选择">
           <el-option :label="item.label" :value="key" v-for="(item, key) in typeOps" :key="key"></el-option>
         </el-select>
       </el-form-item>
@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-// import { rentManagerUpdate } from '@/apis/holdasset-contract'
+import { addFood } from '@/apis/food'
 import { ref, reactive, defineEmits, defineExpose } from 'vue'
 import { TypeOps, UnitOps } from './const'
 const typeOps = ref(TypeOps)
@@ -73,15 +73,15 @@ defineExpose({
 // 提交
 const emit = defineEmits(['refresh'])
 const submitClick = () => {
-  formRef.value.validate(valid => {
+  formRef.value.validate(async valid => {
     if (valid) {
-      //   loading.value = true
-      //   let params = {
-      //     ...this.formData
-      //   }
-      //   await rentManagerUpdate(params).finally(() => {
-      //     this.loading = false
-      //   })
+      loading.value = true
+      let params = {
+        ...formData
+      }
+      await addFood(params).finally(() => {
+        loading.value = false
+      })
       // this.$message.success('新增成功')
       visible.value = false
       emit('refresh')

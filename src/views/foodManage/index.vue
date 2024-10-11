@@ -1,18 +1,27 @@
 <template>
   <page-layout>
     <template #search>
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-        <el-form-item label="类型名称">
+      <el-form :inline="true" :model="searchForm" ref="searchFormRef">
+        <el-form-item label="食材名称" prop="name">
           <el-input v-model="searchForm.name" placeholder="请输入" clearable />
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择" clearable>
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
+        <!-- <el-form-item label="保质期" prop="dateRange">
+          <el-date-picker
+            v-model="searchForm.dateRange"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+          />
+        </el-form-item> -->
+        <el-form-item label="食材类型" prop="type">
+          <el-select v-model="searchForm.type" placeholder="请选择" clearable>
+            <el-option :label="item.label" :value="key" v-for="(item, key) in typeOps" :key="key"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
+          <el-button type="primary" @click="onSearch">搜索</el-button>
           <el-button @click="onReset">重置</el-button>
         </el-form-item>
       </el-form>
@@ -21,51 +30,64 @@
       <el-button type="primary" @click="addClick">新增</el-button>
     </template>
     <el-table :data="tableData" height="100%" stripe>
-      <el-table-column prop="date" label="序号" />
-      <el-table-column prop="name" label="食材名称" />
-      <el-table-column prop="type" label="食材类型" />
-      <el-table-column prop="inventory" label="库存" />
-      <el-table-column prop="productDate" label="生产日期" />
-      <el-table-column prop="sellByDate" label="保质期" />
-      <el-table-column prop="createTime" label="创建时间" />
+      <el-table-column type="index" label="序号" width="55" />
+      <el-table-column
+        v-for="(item, index) in TableColumnList"
+        :key="index"
+        :prop="item.prop"
+        :label="item.label"
+        :width="item.width || ''"
+        :min-width="item.minWidth || ''"
+        show-overflow-tooltip
+      >
+        <template #default="{ row }">
+          <span v-if="!item.format">
+            {{ item.func ? item.func(row) : row[item.prop] }}
+          </span>
+        </template>
+      </el-table-column>
     </el-table>
     <template #footer>
       <page-pagination @refresh="getDataList" :page-no.sync="searchForm.pageNo" :page-size.sync="searchForm.pageSize" :total="pageTotal" />
     </template>
-    <addEditDialog ref="addEditDialogRef" />
+    <addEditDialog ref="addEditDialogRef" @refresh="getDataList(1)" />
   </page-layout>
 </template>
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
 import addEditDialog from './addEditDialog.vue'
 import { getFoodPage } from '@/apis/food'
+import { TableColumnList, TypeOps } from './const'
+const typeOps = ref(TypeOps)
+
 onMounted(() => {
   getDataList()
 })
 const searchForm = reactive({
   name: '',
-  status: '',
   pageNo: 1,
   pageSize: 20
 })
 const pageTotal = ref(1)
-let tableData = reactive([{ id: 1, name: '素' }])
+let tableData = reactive([])
 const getDataList = async () => {
-  const data = await getFoodPage(searchForm)
+  const { data } = await getFoodPage(searchForm)
   console.log('data', data)
-  tableData = data.data
+  tableData = data
   pageTotal.value = 100
 }
-const onSubmit = () => {
-  console.log('submit!')
+const onSearch = () => {
+  getDataList(1)
 }
+const searchFormRef = ref(null)
 const onReset = () => {
-  console.log('onReset!')
+  searchFormRef.value.resetFields()
+  getDataList(1)
 }
 
+// 新增编辑弹框
 const addEditDialogRef = ref(null)
 const addClick = () => {
-  console.log(addEditDialogRef.value)
   addEditDialogRef.value.showDialog()
 }
 </script>

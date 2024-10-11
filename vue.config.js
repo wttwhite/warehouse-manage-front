@@ -9,7 +9,7 @@ module.exports = defineConfig({
       'Access-Control-Allow-Origin': '*'
     },
     proxy: {
-      '/food': {
+      '/api': {
         target: 'http://192.168.3.19:3000',
         changeOrigin: true,
         pathRewrite: {
