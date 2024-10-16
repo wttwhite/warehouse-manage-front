@@ -1,5 +1,5 @@
 import axios from 'axios'
-// import { Message } from 'element-plus'
+import { Message } from 'element-plus'
 // create an axios instance
 const service = axios.create({
   baseURL: '/api', // process.env.VUE_APP_BASE_URL, // url = base url + request url
@@ -44,7 +44,7 @@ service.interceptors.response.use(
       return response
     }
     if (res.code !== 0 && res.code !== '0' && res.code !== 200) {
-      // Message.warning(res.msg || res.message)
+      Message.warning(res.msg || res.message)
       return Promise.reject(new Error(res.msg || res.message || 'Error'))
     } else {
       return res

@@ -1,8 +1,8 @@
-import { get, post } from './index'
-export function getFoodPage(params) {
-  return get({
+import { post } from './index'
+export function getFoodPage(data) {
+  return post({
     url: `/food/page`,
-    params
+    data
   })
 }
 export function addFood(data) {

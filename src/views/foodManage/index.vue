@@ -69,12 +69,14 @@ const searchForm = reactive({
   pageSize: 20
 })
 const pageTotal = ref(1)
-let tableData = reactive([])
+// 用reactive新增成功之后刷新表格数据，不会触发视图更新
+// reactive函数只会在初始化时将对象转化成响应式对象，后续添加新属性不会触发视图更新
+let tableData = ref([])
 const getDataList = async () => {
   const { data } = await getFoodPage(searchForm)
   console.log('data', data)
-  tableData = data
-  pageTotal.value = 100
+  tableData.value = data?.records || []
+  pageTotal.value = data?.total || 0
 }
 const onSearch = () => {
   getDataList(1)
