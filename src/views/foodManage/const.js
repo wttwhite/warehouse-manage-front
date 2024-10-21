@@ -10,11 +10,14 @@ export const TypeOps = {
   9: { label: '休闲食品和速食品' },
   10: { label: '饮料和冷饮类' },
   11: { label: '油及调味品' },
-  12: { label: '其他' }
+  12: { label: '火锅底料' },
+  13: { label: '其他' }
 }
 export const UnitOps = {
   g: { label: 'g' },
-  pack: { label: '包' }
+  pack: { label: '包' },
+  he: { label: '盒' },
+  dai: { label: '袋' },
 }
 
 import dayjs from 'dayjs'
@@ -25,7 +28,7 @@ export const TableColumnList = [
     prop: 'inventory',
     label: '库存',
     func: row => {
-      return row.inventory + row.unit
+      return row.inventory + UnitOps[row.unit].label
     },
     minWidth: 100
   },

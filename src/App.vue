@@ -34,6 +34,7 @@ export default {
 .body-header {
   height: 60px;
   background-color: #f5f5f5;
+  flex-shrink: 0;
 }
 .body-content {
   flex: 1;

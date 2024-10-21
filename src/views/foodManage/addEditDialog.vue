@@ -12,14 +12,14 @@
       <el-form-item label="库存" prop="inventory">
         <el-input v-model="formData.inventory">
           <template #append>
-            <el-select v-model="formData.unit" placeholder="Select" style="width: 80px">
+            <el-select v-model="formData.unit" placeholder="Select" style="width: 120px">
               <el-option :label="item.label" :value="key" v-for="(item, key) in unitOps" :key="key" />
             </el-select>
           </template>
         </el-input>
       </el-form-item>
       <el-form-item label="生产日期" prop="productDate">
-        <el-date-picker v-model="formData.productDate" type="date" />
+        <el-date-picker v-model="formData.productDate" type="date" @change="productDateChange" />
       </el-form-item>
       <el-form-item label="保质期" prop="sellByDate">
         <el-date-picker v-model="formData.sellByDate" type="date" />
@@ -36,6 +36,7 @@
 import { addFood } from '@/apis/food'
 import { ref, reactive, defineEmits, defineExpose } from 'vue'
 import { TypeOps, UnitOps } from './const'
+import dayjs from 'dayjs'
 const typeOps = ref(TypeOps)
 const unitOps = ref(UnitOps)
 const visible = ref(false)
@@ -69,6 +70,12 @@ const showDialog = row => {
 defineExpose({
   showDialog
 })
+
+const productDateChange = (val) => {
+  if (!formData.sellByDate) {
+    formData.sellByDate = dayjs(val).add(1, 'year')
+  }
+}
 
 // 提交
 const emit = defineEmits(['refresh'])
