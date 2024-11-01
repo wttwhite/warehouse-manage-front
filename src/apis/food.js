@@ -11,3 +11,15 @@ export function addFood(data) {
     data
   })
 }
+export function updateFood(data) {
+  return post({
+    url: `/food/update`,
+    data
+  })
+}
+export function deleteFood(data) {
+  return post({
+    url: `/food/delete`,
+    data
+  })
+}

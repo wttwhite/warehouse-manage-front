@@ -17,7 +17,7 @@ export const UnitOps = {
   g: { label: 'g' },
   pack: { label: '包' },
   he: { label: '盒' },
-  dai: { label: '袋' },
+  dai: { label: '袋' }
 }
 
 import dayjs from 'dayjs'
@@ -52,7 +52,7 @@ export const TableColumnList = [
     prop: 'createTime',
     label: '创建时间',
     func: row => {
-      return dayjs(row.createTime).format('YYYY-MM-DD hh:mm:ss')
+      return dayjs(row.createTime).format('YYYY-MM-DD HH:mm:ss')
     },
     minWidth: 150
   }

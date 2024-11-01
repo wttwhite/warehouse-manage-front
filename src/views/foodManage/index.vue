@@ -46,6 +46,12 @@
           </span>
         </template>
       </el-table-column>
+      <el-table-column label="操作" width="100">
+        <template #default="{ row }">
+          <el-button type="text" @click="editClick(row)">编辑</el-button>
+          <el-button type="text" @click="deleteClick(row)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <template #footer>
       <page-pagination @refresh="getDataList" :page-no.sync="searchForm.pageNo" :page-size.sync="searchForm.pageSize" :total="pageTotal" />
@@ -56,8 +62,9 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
 import addEditDialog from './addEditDialog.vue'
-import { getFoodPage } from '@/apis/food'
+import { getFoodPage, deleteFood } from '@/apis/food'
 import { TableColumnList, TypeOps } from './const'
+import { ElMessage, ElMessageBox } from 'element-plus'
 const typeOps = ref(TypeOps)
 
 onMounted(() => {
@@ -91,6 +98,23 @@ const onReset = () => {
 const addEditDialogRef = ref(null)
 const addClick = () => {
   addEditDialogRef.value.showDialog()
+}
+const editClick = row => {
+  addEditDialogRef.value.showDialog(row)
+}
+// 删除
+const deleteClick = row => {
+  ElMessageBox.confirm('确定删除吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      await deleteFood({ id: row.id })
+      ElMessage.success('删除成功')
+      getDataList(1)
+    })
+    .catch(() => {})
 }
 </script>
 <style lang="scss" scoped></style>

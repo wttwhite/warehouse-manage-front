@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增" v-model="visible" :close-on-click-modal="false" width="500px">
+  <el-dialog :title="formData.id ? '编辑' : '新增'" v-model="visible" :close-on-click-modal="false" width="500px">
     <el-form ref="formRef" :rules="rules" :model="formData" label-width="90">
       <el-form-item label="食材名称" prop="name">
         <el-input v-model="formData.name" />
@@ -33,22 +33,26 @@
 </template>
 
 <script setup>
-import { addFood } from '@/apis/food'
-import { ref, reactive, defineEmits, defineExpose } from 'vue'
+import { addFood, updateFood } from '@/apis/food'
+import { ref, defineEmits, defineExpose } from 'vue'
 import { TypeOps, UnitOps } from './const'
+import { ElMessage } from 'element-plus'
 import dayjs from 'dayjs'
 const typeOps = ref(TypeOps)
 const unitOps = ref(UnitOps)
 const visible = ref(false)
 const loading = ref(false)
-let formData = reactive({
-  name: '',
-  type: '',
-  inventory: '',
-  unit: 'g',
-  productDate: '',
-  sellByDate: ''
-})
+const DefaultFormData = () => {
+  return {
+    name: '',
+    type: '',
+    inventory: '',
+    unit: 'g',
+    productDate: '',
+    sellByDate: ''
+  }
+}
+let formData = ref({})
 const rules = {
   name: [{ required: true, message: '当前项必填', trigger: 'blur' }],
   type: [{ required: true, message: '当前项必填', trigger: 'blur' }],
@@ -60,20 +64,16 @@ const formRef = ref(null)
 const showDialog = row => {
   visible.value = true
   formRef.value?.resetFields()
-  if (row) {
-    formData = {
-      ...row
-    }
-  }
+  formData.value = row ? { ...row } : DefaultFormData()
 }
 // 通过实例暴露给外面
 defineExpose({
   showDialog
 })
 
-const productDateChange = (val) => {
-  if (!formData.sellByDate) {
-    formData.sellByDate = dayjs(val).add(1, 'year')
+const productDateChange = val => {
+  if (!formData.value.sellByDate) {
+    formData.value.sellByDate = dayjs(val).add(1, 'year')
   }
 }
 
@@ -84,12 +84,20 @@ const submitClick = () => {
     if (valid) {
       loading.value = true
       let params = {
-        ...formData
+        ...formData.value
       }
-      await addFood(params).finally(() => {
-        loading.value = false
-      })
-      // this.$message.success('新增成功')
+      if (formData.value.id) {
+        await updateFood(params).finally(() => {
+          loading.value = false
+        })
+        ElMessage.success('编辑成功')
+      } else {
+        await addFood(params).finally(() => {
+          loading.value = false
+        })
+        ElMessage.success('新增成功')
+      }
+
       visible.value = false
       emit('refresh')
     } else {
