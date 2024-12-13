@@ -2,20 +2,15 @@
   <section class="body-all">
     <section class="body-header"></section>
     <section class="body-content">
-      <Sidebar />
+      <pageSidebar />
       <router-view />
     </section>
   </section>
 </template>
 
 <script>
-import Sidebar from '@/components/pageSidebar.vue'
-
 export default {
-  name: 'App',
-  components: {
-    Sidebar
-  }
+  name: 'App'
 }
 </script>
 

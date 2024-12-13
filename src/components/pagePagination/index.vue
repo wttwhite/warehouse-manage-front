@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, nextTick } from 'vue'
+import { nextTick } from 'vue'
 defineProps({
   background: { type: Boolean, default: true },
   pageNo: { type: Number, default: 1 },
@@ -42,7 +42,7 @@ const currentChangeHandle = val => {
 }
 </script>
 <style lang="scss" scoped>
-::v-deep .el-pagination__editor.el-input {
+:deep(.el-pagination__editor.el-input) {
   min-width: 56px;
   width: auto;
 }

@@ -15,7 +15,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import routes from '../router/routes'
+import routes from '@/router/routes'
 const color = ref('#837f7f')
 const isCollapse = ref(false)
 const router = useRouter()

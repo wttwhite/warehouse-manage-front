@@ -5,8 +5,8 @@
     </div>
     <section :class="'page-container'">
       <!-- <div v-if="!noBreadcrumb" class="page-breadcrumb">
-        <slot name="breadcrumb"></slot>
-      </div> -->
+          <slot name="breadcrumb"></slot>
+        </div> -->
       <section class="page-main">
         <div class="page-search" v-if="!noSearch">
           <slot name="search"></slot>
@@ -30,7 +30,6 @@
   </div>
 </template>
 <script setup>
-import { defineProps } from 'vue'
 defineProps({
   noBreadcrumb: { type: Boolean, default: false },
   // 默认有搜索
@@ -66,21 +65,21 @@ defineProps({
     font-size: 18px;
     color: #0f1114;
     line-height: 26px;
-    ::v-deep .breadcrumb {
+    :deep(.breadcrumb) {
       padding-bottom: 0;
     }
   }
   .page-search {
     // 日期范围284px也够，遇到日期+时间范围的宽一点，暂时没有
-    ::v-deep .el-date-editor.el-input,
-    ::v-deep .el-date-editor.el-input__inner,
-    ::v-deep .el-input,
-    ::v-deep .el-select,
-    ::v-deep .el-date-picker {
+    :deep(.el-date-editor.el-input),
+    :deep(.el-date-editor.el-input__inner),
+    :deep(.el-input),
+    :deep(.el-select),
+    :deep(.el-date-picker) {
       width: 284px;
     }
     // 表单内部的搜索弹框样式受表单影响
-    ::v-deep .el-form--inline.el-form--label-right {
+    :deep(.el-form--inline.el-form--label-right) {
       .el-form-item__label {
         padding: 0 12px 0 0;
       }
@@ -98,19 +97,19 @@ defineProps({
     flex-shrink: 0;
     // margin-bottom: 16px;
 
-    ::v-deep .el-form-item--small.el-form-item {
+    :deep(.el-form-item--small.el-form-item) {
       margin-bottom: 16px;
     }
 
-    ::v-deep .el-input__inner {
+    :deep(.el-input__inner) {
       border-radius: 2px;
     }
 
-    ::v-deep .el-form--inline .el-form-item {
+    :deep(.el-form--inline .el-form-item) {
       margin-right: 32px;
     }
 
-    ::v-deep .el-form--label-top .el-form-item__label {
+    :deep(.el-form--label-top .el-form-item__label) {
       padding: 0;
     }
   }
@@ -131,12 +130,12 @@ defineProps({
       padding-top: 16px;
       border-top: 1px solid #f2f3f5;
 
-      ::v-deep [flex-between] {
+      :deep([flex-between]) {
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
-      ::v-deep [class-unit] {
+      :deep([class-unit]) {
         color: #686868;
       }
     }
