@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-plus'
+import { ElMessage } from 'element-plus'
 // create an axios instance
 const service = axios.create({
   baseURL: '/api', // process.env.VUE_APP_BASE_URL, // url = base url + request url
@@ -44,14 +44,14 @@ service.interceptors.response.use(
       return response
     }
     if (res.code !== 0 && res.code !== '0' && res.code !== 200) {
-      Message.warning(res.msg || res.message)
-      return Promise.reject(new Error(res.msg || res.message || 'Error'))
+      ElMessage.warning(res.msg || res.ElMessage)
+      return Promise.reject(new Error(res.msg || res.ElMessage || 'Error'))
     } else {
       return res
     }
   },
   error => {
-    console.log(error.message)
+    console.log(error.ElMessage)
     return Promise.reject(error)
   }
 )
